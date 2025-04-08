@@ -61,7 +61,7 @@ public class List403Impl<T> implements List403<T>{
     public String toString() {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < size; i++) {
-            s.append(array[i]).append(" ").append("\n");
+            s.append(array[i]).append(" ");
         }
         return s.toString();
     }

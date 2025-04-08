@@ -1,7 +1,12 @@
 package ru.itis.inf403;
 
 import ru.itis.inf403.listAndSet.List403;
+import ru.itis.inf403.listAndSet.List403Impl;
 import ru.itis.inf403.listAndSet.Set400;
+import ru.itis.inf403.listAndSet.Set400Impl;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class MapImpl<K,V> implements Map<K,V> {
     private Node<K, V>[] array;
@@ -9,9 +14,8 @@ public class MapImpl<K,V> implements Map<K,V> {
     private class Node<K, V> {
         Entry<K, V> value;
         Node<K, V> next;
-
         public Node(K key, V value) {
-            EntryImpl<K,V> entry = new EntryImpl<>(key,value);
+            this.value = new EntryImpl<>(key,value);
         }
     }
 
@@ -52,7 +56,7 @@ public class MapImpl<K,V> implements Map<K,V> {
     @Override
     public void put(K key, V value) {
         int index = Math.abs(key.hashCode() % 16);
-        Node<K,V> temp = new Node<K,V>(key,value);
+        Node<K,V> temp = new Node(key,value);
         if (array[index] == null) {
             array[index] = temp;
         } else {
@@ -77,23 +81,60 @@ public class MapImpl<K,V> implements Map<K,V> {
             return null;
         }
         Node<K,V> current = array[index];
-        while(current.next != null) {
-            if (current.value.getKey().equals(key)) {
-                return current.value.getValue();
+        if (current.next == null) {
+            return current.value.getValue();
+        } else {
+            while(true) {
+                if (current.value.getKey().equals(key)) {
+                    return current.value.getValue();
+                }
+                if (current.next == null) {
+                    break;
+                }
+                current = current.next;
             }
-            current = current.next;
         }
         return null;
     }
 
     @Override
     public Set400<K> keySet() {
-        return null;
+        Set400<K> set = new Set400Impl();
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null) {
+                if (array[i].next == null) {
+                    set.add(array[i].value.getKey());
+                } else {
+                    Node<K,V> current = array[i];
+                    while (true) {
+                        set.add(current.value.getKey());
+                        if (current.next == null) {
+                            break;
+                        }
+                        current = current.next;
+                    }
+                }
+            }
+        }
+        return set;
     }
 
     @Override
     public List403<V> values() {
-        return null;
+        List403<V> list = new List403Impl();
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null) {
+                Node<K,V> current = array[i];
+                while (true) {
+                    list.add(current.value.getValue());
+                    if (current.next == null) {
+                        break;
+                    }
+                    current = current.next;
+                }
+            }
+        }
+        return list;
     }
 
     @Override
@@ -103,26 +144,92 @@ public class MapImpl<K,V> implements Map<K,V> {
 
     @Override
     public boolean containsKeys(K key) {
-        return false;
+        Set400<K> set = keySet();
+        return set.contains(key);
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i]!=null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean containsValue(V value) {
+        List403<V> values = values();
+        for (int i = 0; i < values.size(); i++) {
+            if (values.indexOf(i).equals(value)) {
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public V remove(K key) {
-        return null;
+        if (!containsKeys(key)) {
+            return null;
+        }
+        int index = Math.abs(key.hashCode()%16);
+        Node<K,V> current = array[index];
+        if (array[index].next == null) {
+            array[index] = null;
+            size--;
+            return current.value.getValue();
+        } else {
+            while(true) {
+                if (current.next.value.getKey().equals(key)) {
+                    Node<K,V> next = current.next;
+                    current.next = current.next.next;
+                    size--;
+                    return next.value.getValue();
+                }
+                current = current.next;
+            }
+        }
     }
 
     @Override
     public void clear() {
+        array = new Node[16];
+    }
 
+    private int findNextIndex(int index) {
+        for (int i = index+1; i < array.length; i++) {
+            if (array[i]!=null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private Node<K,V> findNextNode(Node<K,V> first, int index) {
+        Node<K,V> current = first;
+        for (int i = 1; i < index; i++) {
+            current = current.next;
+        }
+        return current.next;
+    }
+
+    public Iterator<Entry<K,V>> iterator() {
+        return new MapIterator();
+    }
+
+    class MapIterator implements Iterator<Entry<K,V>> {
+        private int curIndex=0;
+        private K[] array = keySet().getAll((K[]) new Object[0]);
+        @Override
+        public boolean hasNext() {
+            return curIndex < array.length;
+        }
+        @Override
+        public Entry<K,V> next() {
+            K key = array[curIndex++];
+            return new EntryImpl(key,get(key));
+        }
     }
 }
