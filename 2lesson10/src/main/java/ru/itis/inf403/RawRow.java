@@ -1,8 +1,8 @@
 package ru.itis.inf403;
 
-public class Row {
+public class RawRow {
     //6
-    private String RiskScoreCVRM;
+    private String riskScoreCVRM;
     //7
     private String mdrd;
     //9
@@ -17,6 +17,26 @@ public class Row {
     private String psCVRM;
     //19
     private String smokingstatus;
+    //16
+    private String bmi;
+    private String age;
+    private String hypertension;
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getHypertension() {
+        return hypertension;
+    }
+
+    public void setHypertension(String hypertension) {
+        this.hypertension = hypertension;
+    }
 
     public String getBmi() {
         return bmi;
@@ -27,11 +47,11 @@ public class Row {
     }
 
     public String getRiskScoreCVRM() {
-        return RiskScoreCVRM;
+        return riskScoreCVRM;
     }
 
     public void setRiskScoreCVRM(String riskScoreCVRM) {
-        RiskScoreCVRM = riskScoreCVRM;
+        this.riskScoreCVRM = riskScoreCVRM;
     }
 
     public String getMdrd() {
@@ -90,6 +110,18 @@ public class Row {
         this.smokingstatus = smokingstatus;
     }
 
-    //16
-    private String bmi;
+    public boolean badRecord() {
+        return riskScoreCVRM.isBlank() ||
+                totalCholesterol.isBlank() ||
+                mdrd.isBlank() ||
+                glucoseFasting.isBlank() ||
+                smokingstatus.isBlank() ||
+                systolicBloodPressure.isBlank() ||
+                diastolicBloodPressure.isBlank() ||
+                bmi.isBlank() ||
+                age.isBlank() ||
+                hypertension.isBlank();
+
+    }
+
 }
