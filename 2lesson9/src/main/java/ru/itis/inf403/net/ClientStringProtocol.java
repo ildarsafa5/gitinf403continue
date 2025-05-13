@@ -1,39 +1,34 @@
 package ru.itis.inf403.net;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import org.w3c.dom.ls.LSOutput;
+
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ClientMessenger {
+public class ClientStringProtocol {
     public static void main(String[] args) {
 
         try {
             Socket socket = new Socket("127.0.0.1",50000);
 
             //Поток для чтения данных от сервера
-            DataInputStream is = new DataInputStream(socket.getInputStream());
+            BufferedReader is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             //Поток для передачи данных серверу
-            DataOutputStream os = new DataOutputStream(socket.getOutputStream());
+            BufferedWriter os = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             while(true) {
                 Scanner scanner = new Scanner(System.in);
 
                 //Отправляем сообщение на сервер
                 String message = scanner.nextLine();
-                int size = message.getBytes().length;
-                os.writeInt(size);
-                os.write(message.getBytes());
+                os.write(message+"\n");
                 os.flush();
                 if (message.equals("exit")) {
                     break;
                 }
 
                 //читаем послание от сервера
-                size = is.readInt(); //размер сообщения
-                byte[] buffer = new byte[size];  //готовим буфер нужного размера
-                is.read(buffer);
-                message = new String(buffer);
+                message = is.readLine();
                 System.out.println(message);
                 if (message.equals("exit")) {
                     break;
