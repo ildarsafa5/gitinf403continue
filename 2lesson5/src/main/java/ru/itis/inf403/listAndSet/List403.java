@@ -1,4 +1,4 @@
-package ru.itis.inf403.listAndSet;
+package ru.itis.inf403;
 
 import java.util.Comparator;
 
