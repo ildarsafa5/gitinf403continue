@@ -1,10 +1,10 @@
 package ru.itis.inf403;
 
-public class Person {
+public class Person1 {
     private Integer age;
     private String name;
 
-    public Person(String name,Integer age) {
+    public Person1(String name, Integer age) {
         this.age = age;
         this.name = name;
     }
