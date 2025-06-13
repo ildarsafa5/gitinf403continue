@@ -1,4 +1,4 @@
-package ru.itis.inf403;
+package ru.itis.inf403.structures;
 
 import java.util.Comparator;
 

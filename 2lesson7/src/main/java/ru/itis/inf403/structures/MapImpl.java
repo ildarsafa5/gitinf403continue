@@ -1,12 +1,9 @@
-package ru.itis.inf403;
+package ru.itis.inf403.structures;
 
-import ru.itis.inf403.listAndSet.List403;
-import ru.itis.inf403.listAndSet.List403Impl;
-import ru.itis.inf403.listAndSet.Set400;
-import ru.itis.inf403.listAndSet.Set400Impl;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 public class MapImpl<K,V> implements Map<K,V> {
     private Node<K, V>[] array;
@@ -82,6 +79,9 @@ public class MapImpl<K,V> implements Map<K,V> {
         }
         Node<K,V> current = array[index];
         if (current.next == null) {
+            if (!current.value.getKey().equals(key)) {
+                return null;
+            }
             return current.value.getValue();
         } else {
             while(true) {
@@ -102,9 +102,6 @@ public class MapImpl<K,V> implements Map<K,V> {
         Set400<K> set = new Set400Impl();
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
-                if (array[i].next == null) {
-                    set.add(array[i].value.getKey());
-                } else {
                     Node<K,V> current = array[i];
                     while (true) {
                         set.add(current.value.getKey());
@@ -113,7 +110,6 @@ public class MapImpl<K,V> implements Map<K,V> {
                         }
                         current = current.next;
                     }
-                }
             }
         }
         return set;
@@ -198,21 +194,14 @@ public class MapImpl<K,V> implements Map<K,V> {
         array = new Node[16];
     }
 
-    private int findNextIndex(int index) {
-        for (int i = index+1; i < array.length; i++) {
-            if (array[i]!=null) {
-                return i;
-            }
+    public Map<K,V> copyOf() {
+        Map<K,V> map = new MapImpl();
+        Set400<K> set = keySet();
+        K[] set1 = set.getAll((K[])new Object[0]);
+        for (int i = 0; i < set1.length; i++) {
+            map.put(set1[i],get(set1[i]));
         }
-        return -1;
-    }
-
-    private Node<K,V> findNextNode(Node<K,V> first, int index) {
-        Node<K,V> current = first;
-        for (int i = 1; i < index; i++) {
-            current = current.next;
-        }
-        return current.next;
+        return map;
     }
 
     public Iterator<Entry<K,V>> iterator() {
@@ -246,5 +235,13 @@ public class MapImpl<K,V> implements Map<K,V> {
 //            step++;
 //            return head;
 //        }
+    }
+
+    public <R> List403<R> map(Function<V,R> function) {
+        List403<R> list = new List403Impl<>();
+        for (MapImpl.Entry<K,V> n : this) {
+            list.add(function.apply(n.getValue()));
+        }
+        return list;
     }
 }

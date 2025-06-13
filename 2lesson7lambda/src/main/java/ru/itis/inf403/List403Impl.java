@@ -1,6 +1,9 @@
-package ru.itis.inf403.structures;
+package ru.itis.inf403;
 
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Function;
 
 public class List403Impl<T> implements List403<T>{
     private T[] array;
@@ -80,6 +83,14 @@ public class List403Impl<T> implements List403<T>{
                 }
             }
         }
+    }
+
+    public <R> Set<R> map(Function<T,R> function) {
+        Set<R> set = new HashSet<>();
+        for (int i = 0; i < size; i++) {
+            set.add(function.apply(array[i]));
+        }
+        return set;
     }
 
 

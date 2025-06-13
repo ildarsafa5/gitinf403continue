@@ -1,4 +1,4 @@
-package ru.itis.inf403;
+package ru.itis.inf403.listAndSet;
 
 import java.util.Comparator;
 
@@ -10,11 +10,4 @@ public interface List403<T> {
     T indexOf(int position) throws IndexOutOfBoundsException;// обращение по индексу
     void set(int i, int j);
     void sort(Comparator<T> comparator);
-
-
-
-
-
-
-
 }

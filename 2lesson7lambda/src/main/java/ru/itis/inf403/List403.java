@@ -1,6 +1,8 @@
-package ru.itis.inf403.structures;
+package ru.itis.inf403;
 
 import java.util.Comparator;
+import java.util.Set;
+import java.util.function.Function;
 
 public interface List403<T> {
     void add(T a); // добавляет элемент в конец списка
@@ -10,6 +12,7 @@ public interface List403<T> {
     T indexOf(int position) throws IndexOutOfBoundsException;// обращение по индексу
     void set(int i, int j);
     void sort(Comparator<T> comparator);
+    <R> Set<R> map(Function<T,R> function);
 
 
 

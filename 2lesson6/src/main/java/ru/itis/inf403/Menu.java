@@ -15,16 +15,18 @@ public class Menu implements Iterable<String> {
     }
 
     class MenuIterator implements Iterator<String> {
-        private int currentIndex = -1;
+        private int currentIndex = 0;
         public boolean hasNext() {
-            return currentIndex<dishes.length-1;
+            return currentIndex<dishes.length;
         }
         public String next() {
-            if (currentIndex == dishes.length -1) {
+            if (currentIndex == dishes.length) {
                 throw new NoSuchElementException();
             }
-            return dishes[++currentIndex];
+            return dishes[currentIndex++];
         }
-
+    }
+    public void set(String[] dishes) {
+        this.dishes = dishes;
     }
 }

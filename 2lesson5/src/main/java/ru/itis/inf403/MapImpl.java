@@ -221,15 +221,30 @@ public class MapImpl<K,V> implements Map<K,V> {
 
     class MapIterator implements Iterator<Entry<K,V>> {
         private int curIndex=0;
-        private K[] array = keySet().getAll((K[]) new Object[0]);
+        private K[] array1 = keySet().getAll((K[]) new Object[0]);
         @Override
         public boolean hasNext() {
-            return curIndex < array.length;
+            return curIndex < array1.length;
         }
         @Override
         public Entry<K,V> next() {
-            K key = array[curIndex++];
+            if (curIndex == array1.length) {
+                throw new NoSuchElementException();
+            }
+            K key = array1[curIndex++];
             return new EntryImpl(key,get(key));
         }
+//        private Node<K,V> currentNode = array[0];
+//        public Entry<K, V> next() {
+//            if (currentNode == null) {
+//                while (currentNode == null) {
+//                    currentNode = array[++arrayStep];
+//                }
+//            }
+//            head = currentNode.value;
+//            currentNode = currentNode.next;
+//            step++;
+//            return head;
+//        }
     }
 }

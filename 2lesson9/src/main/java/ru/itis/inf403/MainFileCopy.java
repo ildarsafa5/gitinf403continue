@@ -1,7 +1,6 @@
 package ru.itis.inf403;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class MainFileCopy {
@@ -29,12 +28,11 @@ public class MainFileCopy {
             byte[] buffer = new byte[1024];
             int i;
             while ((i = is.read(buffer)) > -1) {
-                fos.write(new String(buffer,0,i).toUpperCase().getBytes(StandardCharsets.UTF_8));
+                fos.write(new String(buffer,0,i).toUpperCase().getBytes());
             }
             fos.flush();
         } catch(IOException e) {
             e.printStackTrace();
         }
     }
-
 }

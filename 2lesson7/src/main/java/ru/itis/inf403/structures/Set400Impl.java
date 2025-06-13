@@ -1,4 +1,6 @@
-package ru.itis.inf403.listAndSet;
+package ru.itis.inf403.structures;
+
+
 
 import java.lang.reflect.Array;
 

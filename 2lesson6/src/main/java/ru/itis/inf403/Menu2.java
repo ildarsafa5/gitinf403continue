@@ -3,7 +3,7 @@ package ru.itis.inf403;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Menu2 {
+public class Menu2 implements Iterable<String>{
     private String dish1;
     private String dish2;
     private String dish3;
@@ -18,7 +18,7 @@ public class Menu2 {
     }
 
     class Menu2Iterator implements Iterator<String> {
-        private int currentIndex = -1;
+        private int currentIndex = 0;
         public boolean hasNext() {
             return currentIndex<3;
         }
@@ -33,6 +33,5 @@ public class Menu2 {
                 default -> throw new NoSuchElementException();
             };
         }
-
     }
 }

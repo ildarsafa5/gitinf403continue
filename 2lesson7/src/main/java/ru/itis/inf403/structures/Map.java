@@ -1,10 +1,6 @@
-package ru.itis.inf403;
+package ru.itis.inf403.structures;
 
-
-import ru.itis.inf403.listAndSet.List403;
-import ru.itis.inf403.listAndSet.Set400;
-
-import java.util.Iterator;
+import java.util.function.Function;
 
 
 public interface Map<K,V> extends Iterable<Map.Entry<K,V>> {
@@ -18,7 +14,7 @@ public interface Map<K,V> extends Iterable<Map.Entry<K,V>> {
     boolean containsValue(V value);
     V remove(K key);
     void clear();
-    Iterator<Entry<K,V>> iterator();
+    Map<K,V> copyOf();
 
     interface Entry<K,V> {
         void setKey(K key);
@@ -26,5 +22,7 @@ public interface Map<K,V> extends Iterable<Map.Entry<K,V>> {
         K getKey();
         V getValue();
     }
+
+    <R> List403<R> map(Function<V,R> function);
 
 }

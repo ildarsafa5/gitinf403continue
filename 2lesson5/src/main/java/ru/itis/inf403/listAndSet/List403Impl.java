@@ -1,8 +1,8 @@
-package ru.itis.inf403;
+package ru.itis.inf403.listAndSet;
 
 import java.util.Comparator;
 
-public class List403Impl<T> implements List403<T>{
+public class List403Impl<T> implements List403<T> {
     private T[] array;
     private int size;
 
